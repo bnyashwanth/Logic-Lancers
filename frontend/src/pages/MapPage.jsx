@@ -10,12 +10,23 @@ import './MapPage.css';
 export default function MapPage() {
   const { incidents } = useIncidents();
   const [selectedIncident, setSelectedIncident] = useState(null);
+  const [targetedIncident, setTargetedIncident] = useState(null);
   const navigate = useNavigate();
 
   return (
     <div className="map-page">
-      <MapView incidents={incidents} onIncidentClick={setSelectedIncident} />
-      <IncidentOverlay incidents={incidents} />
+      <MapView 
+        incidents={incidents} 
+        onIncidentClick={setSelectedIncident} 
+        targetedIncident={targetedIncident}
+      />
+      <IncidentOverlay 
+        incidents={incidents} 
+        onIncidentSelect={(inc) => {
+          setTargetedIncident(inc);
+          // Also center map on it
+        }} 
+      />
 
       {/* FAB */}
       <button className="map-page__fab" onClick={() => navigate('/request')} title="Report Incident">

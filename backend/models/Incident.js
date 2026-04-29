@@ -61,11 +61,10 @@ incidentSchema.virtual('isFull').get(function () {
 });
 
 // Auto-set status to FULL when volunteer limit reached
-incidentSchema.pre('save', function (next) {
+incidentSchema.pre('save', async function () {
   if (this.volunteers.length >= this.requiredVolunteers && this.status === 'OPEN') {
     this.status = 'FULL';
   }
-  next();
 });
 
 incidentSchema.set('toJSON', { virtuals: true });

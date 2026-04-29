@@ -60,6 +60,11 @@ export default function CoordinationModal({ incident, onClose }) {
             <DetailRow icon="medical_services" label="Specific items" value={incident.specificItems.join(', ')} />
           )}
           <DetailRow icon="location_on" label="Location" value={incident.location?.address || `${incident.location?.lat}, ${incident.location?.lng}`} />
+          {incident.description && (
+            <div style={{ marginTop: '12px', padding: '12px', background: 'var(--color-surface-variant)', borderRadius: '8px', fontSize: '13px', color: 'var(--color-on-surface-variant)', lineHeight: '1.5' }}>
+              {incident.description}
+            </div>
+          )}
           {incident.contactPerson?.name && (
             <DetailRow icon="person" label="Contact person" value={incident.contactPerson.name} subtitle={incident.contactPerson.role} />
           )}
