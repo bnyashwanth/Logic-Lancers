@@ -14,12 +14,15 @@ const isAdmin = (req, res, next) => {
 router.post('/auth', auth, async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(`[ADMIN AUTH] Attempt for: ${email}`);
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPassword = password.trim();
 
-    // For demo: we'll use a hardcoded check matching the frontend's AdminCredentials.js
-    if (email === "admin@responder.com" && password === "admin_password_123") {
+    console.log(`[ADMIN AUTH] Attempt for: ${cleanEmail}`);
+
+    // Flexible check for hackathon convenience
+    if (cleanEmail === "admin@responder.com" && (cleanPassword === "admin_password_123" || cleanPassword === "admin123")) {
       const user = await User.findByIdAndUpdate(req.user._id, { role: 'ADMIN' }, { new: true });
-      console.log(`[ADMIN AUTH] Success for: ${user.name}`);
+      console.log(`[ADMIN AUTH] SUCCESS: ${user.name} is now an ADMIN`);
       return res.json({ success: true, message: 'Role upgraded to ADMIN', user });
     }
     
