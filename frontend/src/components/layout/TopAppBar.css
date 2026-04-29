@@ -1,0 +1,67 @@
+.top-app-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background-color: var(--color-surface-container-lowest);
+  border-bottom: 2px solid var(--color-primary-container);
+  z-index: 50;
+}
+
+.top-app-bar__leading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-primary-container);
+}
+
+.top-app-bar__title {
+  font-family: var(--font-family);
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-primary-container);
+}
+
+.top-app-bar__trailing {
+  width: 24px;
+}
+
+/* Offline Banner */
+.offline-banner {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  background-color: var(--color-surface-container-low);
+  border-bottom: 2px solid var(--color-primary-container);
+  z-index: 40;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.offline-banner .material-symbols-outlined {
+  color: var(--color-error);
+}
+
+.offline-banner__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-error);
+}
+
+.offline-banner__subtitle {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color-on-surface-variant);
+  margin-top: 2px;
+}

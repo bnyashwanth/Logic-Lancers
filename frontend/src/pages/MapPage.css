@@ -1,0 +1,33 @@
+.map-page {
+  position: relative;
+  width: 100%;
+  height: calc(100dvh - 56px - 64px);
+}
+
+@media (min-width: 768px) {
+  .map-page {
+    height: calc(100dvh - 56px);
+  }
+}
+
+.map-page__fab {
+  position: absolute;
+  bottom: 100px;
+  right: 16px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-error);
+  color: var(--color-on-error);
+  border: 2px solid transparent;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: background-color 0.15s ease;
+}
+
+.map-page__fab:hover {
+  background-color: var(--color-on-error-container);
+}

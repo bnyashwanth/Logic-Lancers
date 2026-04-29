@@ -1,0 +1,32 @@
+.location-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.location-picker__btn {
+  height: 48px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--color-primary-container);
+  background-color: var(--color-surface-container-low);
+  color: var(--color-on-surface);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: var(--radius-default);
+  transition: background-color 0.15s ease;
+}
+
+.location-picker__btn:hover {
+  background-color: var(--color-surface-variant);
+}
+
+.location-picker__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,0 +1,79 @@
+.triage-card {
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-primary-container);
+  border-left: 4px solid;
+  padding: 12px;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.triage-card:hover {
+  background-color: var(--color-surface-container-low);
+}
+
+.triage-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.triage-card__urgency {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.triage-card--critical .triage-card__urgency { color: var(--color-error); }
+.triage-card--urgent .triage-card__urgency { color: var(--color-tertiary); }
+.triage-card--stable .triage-card__urgency { color: var(--color-secondary); }
+
+.triage-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-on-surface-variant);
+}
+
+.triage-card__distance {
+  display: flex;
+  align-items: center;
+}
+
+.triage-card__distance .material-symbols-outlined {
+  margin-right: 4px;
+}
+
+.triage-card__title {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  color: var(--color-primary-container);
+  margin-bottom: 8px;
+}
+
+.triage-card__tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.triage-card__tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid var(--color-outline-variant);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-on-surface-variant);
+  background-color: var(--color-surface-container-low);
+}

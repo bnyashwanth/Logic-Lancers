@@ -1,0 +1,25 @@
+.volunteer-progress {
+  padding: 0 var(--space-margin-mobile) var(--space-margin-mobile);
+}
+
+.volunteer-progress__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2px solid var(--color-surface-container-highest);
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.volunteer-progress__bar {
+  height: 4px;
+  background-color: var(--color-surface-container-high);
+  width: 100%;
+  margin-top: 8px;
+}
+
+.volunteer-progress__fill {
+  height: 100%;
+  background-color: var(--color-primary);
+  transition: width 0.5s ease;
+}

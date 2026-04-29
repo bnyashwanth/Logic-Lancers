@@ -1,0 +1,48 @@
+.incident-overlay {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-primary-container);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+  box-shadow: var(--shadow-sm);
+}
+
+.incident-overlay__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.incident-overlay__critical-badge {
+  background-color: var(--color-error);
+  color: var(--color-on-error);
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.incident-overlay__divider {
+  height: 1px;
+  background-color: var(--color-surface-container-highest);
+}
+
+.incident-overlay__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  color: var(--color-on-surface-variant);
+}
+
+.incident-overlay__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}

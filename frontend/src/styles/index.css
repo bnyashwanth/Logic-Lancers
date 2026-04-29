@@ -1,0 +1,382 @@
+/* ============================================================
+   RESPONDER — Design System Tokens
+   Hyperlocal Disaster Sync
+   Converted from Stitch mockups — Strict Minimalism
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+/* ---------- CSS Custom Properties ---------- */
+:root {
+  /* Colors — Primary */
+  --color-primary: #0a1422;
+  --color-primary-container: #1f2937;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #8690a1;
+  --color-primary-fixed: #d9e3f6;
+  --color-primary-fixed-dim: #bdc7d9;
+  --color-on-primary-fixed: #121c2a;
+  --color-on-primary-fixed-variant: #3d4756;
+  --color-inverse-primary: #bdc7d9;
+
+  /* Colors — Secondary */
+  --color-secondary: #0051d5;
+  --color-secondary-container: #316bf3;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #fefcff;
+  --color-secondary-fixed: #dbe1ff;
+  --color-secondary-fixed-dim: #b4c5ff;
+  --color-on-secondary-fixed: #00174b;
+  --color-on-secondary-fixed-variant: #003ea8;
+
+  /* Colors — Tertiary */
+  --color-tertiary: #1d1202;
+  --color-tertiary-container: #342611;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #a28c70;
+  --color-tertiary-fixed: #f8dfbf;
+  --color-tertiary-fixed-dim: #dbc3a4;
+  --color-on-tertiary-fixed: #261906;
+  --color-on-tertiary-fixed-variant: #55442d;
+
+  /* Colors — Error / Semantic */
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+
+  /* Colors — Surface Hierarchy */
+  --color-surface: #f8f9fb;
+  --color-surface-dim: #d9dadc;
+  --color-surface-bright: #f8f9fb;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f3f4f6;
+  --color-surface-container: #edeef0;
+  --color-surface-container-high: #e7e8ea;
+  --color-surface-container-highest: #e1e2e4;
+  --color-surface-variant: #e1e2e4;
+  --color-surface-tint: #555f6f;
+  --color-on-surface: #191c1e;
+  --color-on-surface-variant: #44474c;
+
+  /* Colors — Misc */
+  --color-background: #f8f9fb;
+  --color-on-background: #191c1e;
+  --color-outline: #75777c;
+  --color-outline-variant: #c5c6cc;
+  --color-inverse-surface: #2e3132;
+  --color-inverse-on-surface: #f0f1f3;
+
+  /* Semantic Aliases */
+  --color-success: #16a34a;
+  --color-warning: #f8dfbf;
+
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Spacing — 4px baseline grid */
+  --space-unit: 4px;
+  --space-stack-gap: 8px;
+  --space-gutter: 12px;
+  --space-margin-mobile: 16px;
+  --space-touch-target-min: 48px;
+
+  /* Shape */
+  --radius-default: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  /* Elevation — none (utilitarian flat design) */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* ---------- Global Reset ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-surface-container-lowest);
+  color: var(--color-on-surface);
+  line-height: 1.5;
+  min-height: 100dvh;
+}
+
+/* ---------- Typography Classes ---------- */
+.text-headline-lg {
+  font-family: var(--font-family);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+}
+
+.text-headline-md {
+  font-family: var(--font-family);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: -0.01em;
+}
+
+.text-body-lg {
+  font-family: var(--font-family);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.text-body-md {
+  font-family: var(--font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.text-label-bold {
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.text-label-md {
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.text-status-number {
+  font-family: var(--font-family);
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 40px;
+}
+
+/* ---------- Material Symbols ---------- */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ---------- Button Primitives ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-stack-gap);
+  min-height: var(--space-touch-target-min);
+  padding: 0 16px;
+  border-radius: var(--radius-default);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary);
+  border-color: var(--color-primary-container);
+}
+.btn-primary:hover {
+  background-color: var(--color-primary);
+}
+
+.btn-danger {
+  background-color: var(--color-error);
+  color: var(--color-on-error);
+  border-color: var(--color-error);
+}
+.btn-danger:hover {
+  background-color: var(--color-on-error-container);
+}
+
+.btn-outline {
+  background-color: var(--color-surface-container-lowest);
+  color: var(--color-primary-container);
+  border-color: var(--color-primary-container);
+}
+.btn-outline:hover {
+  background-color: var(--color-surface-container-low);
+}
+
+.btn-disabled {
+  background-color: var(--color-surface-container-highest);
+  color: var(--color-on-primary-container);
+  border-color: var(--color-surface-container-highest);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-primary-container);
+  border: none;
+}
+.btn-ghost:hover {
+  background-color: var(--color-surface-container-high);
+}
+
+/* ---------- Input Primitives ---------- */
+.input,
+.select,
+.textarea {
+  width: 100%;
+  min-height: var(--space-touch-target-min);
+  padding: 12px;
+  border: 1px solid var(--color-primary-container);
+  border-radius: var(--radius-default);
+  background-color: var(--color-surface-container-lowest);
+  color: var(--color-on-surface);
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 24px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--color-secondary);
+  border-width: 3px;
+  padding: 10px; /* compensate for 3px border */
+}
+.textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.select {
+  appearance: none;
+  cursor: pointer;
+}
+
+/* ---------- Badge / Chip ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  border: 1px solid var(--color-outline-variant);
+  background-color: var(--color-surface-container-low);
+  color: var(--color-on-surface-variant);
+}
+
+.badge-critical {
+  background-color: var(--color-error);
+  color: var(--color-on-error);
+  border-color: var(--color-error);
+  font-weight: 700;
+}
+
+.badge-urgent {
+  background-color: var(--color-error-container);
+  color: var(--color-on-error-container);
+  border-color: var(--color-error);
+  font-weight: 700;
+}
+
+/* ---------- Card ---------- */
+.card {
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-primary-container);
+  padding: 12px;
+  min-height: 72px;
+}
+
+/* ---------- Scrollbar Utilities ---------- */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ---------- Leaflet Overrides ---------- */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-family);
+}
+
+/* ---------- App Layout ---------- */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+/* ---------- Animations ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ---------- Responsive ---------- */
+@media (min-width: 768px) {
+  .md-hidden { display: none; }
+  .md-flex { display: flex; }
+  .md-block { display: block; }
+}
+@media (max-width: 767px) {
+  .mobile-hidden { display: none; }
+}

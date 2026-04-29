@@ -1,0 +1,39 @@
+.request-form-page {
+  max-width: 448px;
+  margin: 0 auto;
+  padding: 8px 16px;
+}
+
+.request-form-page__header {
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
+
+.request-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-field label {
+  color: var(--color-on-surface);
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-outline);
+  pointer-events: none;
+}

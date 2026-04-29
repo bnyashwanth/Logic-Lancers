@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Disaster Coordination - Matching Modal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#1f2937",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#f8dfbf",
+                        "inverse-primary": "#bdc7d9",
+                        "on-secondary-fixed": "#00174b",
+                        "primary-fixed-dim": "#bdc7d9",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#342611",
+                        "surface": "#f8f9fb",
+                        "secondary-fixed": "#dbe1ff",
+                        "tertiary-fixed-dim": "#dbc3a4",
+                        "outline": "#75777c",
+                        "surface-container-highest": "#e1e2e4",
+                        "background": "#f8f9fb",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#a28c70",
+                        "inverse-on-surface": "#f0f1f3",
+                        "surface-bright": "#f8f9fb",
+                        "surface-container-high": "#e7e8ea",
+                        "outline-variant": "#c5c6cc",
+                        "on-primary-container": "#8690a1",
+                        "on-tertiary-fixed-variant": "#55442d",
+                        "on-error-container": "#93000a",
+                        "secondary": "#0051d5",
+                        "surface-dim": "#d9dadc",
+                        "on-surface-variant": "#44474c",
+                        "tertiary": "#1d1202",
+                        "error": "#ba1a1a",
+                        "on-background": "#191c1e",
+                        "inverse-surface": "#2e3132",
+                        "surface-container": "#edeef0",
+                        "primary-fixed": "#d9e3f6",
+                        "primary": "#0a1422",
+                        "on-primary-fixed": "#121c2a",
+                        "on-secondary-container": "#fefcff",
+                        "on-tertiary-fixed": "#261906",
+                        "surface-variant": "#e1e2e4",
+                        "secondary-container": "#316bf3",
+                        "surface-tint": "#555f6f",
+                        "on-primary-fixed-variant": "#3d4756",
+                        "surface-container-low": "#f3f4f6",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "on-surface": "#191c1e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "touch-target-min": "48px",
+                        "margin-mobile": "16px",
+                        "stack-gap": "8px",
+                        "gutter": "12px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "status-number": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-bold": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "status-number": ["32px", { "lineHeight": "40px", "fontWeight": "800" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-bold": ["14px", { "lineHeight": "20px", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "26px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-high min-h-screen flex items-center justify-center p-4">
+<!-- Modal Container -->
+<div class="w-full max-w-[480px] bg-surface-container-lowest border border-outline rounded-DEFAULT flex flex-col shadow-none">
+<!-- Header -->
+<div class="p-margin-mobile border-b border-outline flex justify-between items-start gap-gutter">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 bg-error-container text-on-error-container font-label-bold text-label-bold px-2 py-1 border border-error">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">priority_high</span>
+                        URGENT
+                    </span>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary mt-2">Medical Supplies Needed</h1>
+</div>
+<button class="min-h-touch-target-min min-w-[48px] flex items-start justify-end text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Scrollable Body -->
+<div class="flex flex-col overflow-y-auto">
+<!-- Warning Banner -->
+<div class="m-margin-mobile p-4 bg-tertiary-fixed border border-tertiary-container rounded-DEFAULT flex gap-3 items-start">
+<span class="material-symbols-outlined text-tertiary-container mt-0.5" style="font-variation-settings: 'FILL' 1;">warning</span>
+<p class="font-body-md text-body-md text-tertiary-container m-0">Warning: 10 volunteers are already heading to this location. Your help might be needed elsewhere.</p>
+</div>
+<!-- Progress Section -->
+<div class="px-margin-mobile pb-margin-mobile flex flex-col gap-stack-gap">
+<div class="flex justify-between items-end border-b-2 border-surface-container-highest pb-2">
+<span class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Volunteers En Route</span>
+<span class="font-status-number text-status-number text-primary leading-none">10/10</span>
+</div>
+<!-- Linear Progress Bar -->
+<div class="h-unit bg-surface-container-high w-full mt-2">
+<div class="h-full bg-primary w-full transition-all duration-500"></div>
+</div>
+</div>
+<!-- Details List -->
+<div class="flex flex-col border-t border-surface-container-highest bg-surface-container-lowest">
+<!-- Specific Items -->
+<div class="min-h-[56px] px-margin-mobile py-3 flex items-center justify-between border-b border-surface-container-highest">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">medical_services</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Specific items</span>
+</div>
+<span class="font-label-bold text-label-bold text-primary text-right max-w-[50%]">Trauma kits, IV fluids, Bandages</span>
+</div>
+<!-- Location -->
+<div class="min-h-[56px] px-margin-mobile py-3 flex items-center justify-between border-b border-surface-container-highest">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">location_on</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Location</span>
+</div>
+<div class="flex flex-col items-end text-right">
+<span class="font-label-bold text-label-bold text-primary">Sector 4, Main Street</span>
+<a class="font-label-md text-label-md text-secondary flex items-center gap-1 mt-1" href="#">
+<span class="material-symbols-outlined text-[14px]">map</span> View Map
+                        </a>
+</div>
+</div>
+<!-- Contact Person -->
+<div class="min-h-[56px] px-margin-mobile py-3 flex items-center justify-between border-b border-surface-container-highest">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline">person</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Contact person</span>
+</div>
+<div class="flex flex-col items-end text-right">
+<span class="font-label-bold text-label-bold text-primary">Dr. Sarah Jenkins</span>
+<span class="font-label-md text-label-md text-on-surface-variant mt-1">Field Medic</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-margin-mobile flex flex-col gap-stack-gap bg-surface border-t border-outline">
+<!-- Secondary CTA (Now Primary focus due to full capacity) -->
+<button class="min-h-touch-target-min w-full bg-primary text-on-primary font-label-bold text-label-bold flex justify-center items-center rounded-DEFAULT border border-primary transition-colors hover:bg-primary-container">
+                Find another nearby
+            </button>
+<!-- Primary CTA (Disabled State) -->
+<button class="min-h-touch-target-min w-full bg-surface-container-highest text-on-primary-container font-label-bold text-label-bold flex justify-center items-center rounded-DEFAULT border border-surface-container-highest cursor-not-allowed opacity-70" disabled="">
+                I'm on my way (Capacity Reached)
+            </button>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+:root {
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  --color-primary: #000000;
+  --color-secondary: #5e5e5e;
+  --color-tertiary: #3b3b3b;
+
+  --color-surface: #f9f9f9;
+  --color-surface-lowest: #ffffff;
+  --color-surface-low: #f3f3f4;
+  --color-surface-container: #eeeeee;
+  --color-surface-high: #e8e8e8;
+  --color-surface-highest: #e2e2e2;
+
+  --color-on-primary: #e2e2e2;
+  --color-on-secondary-container: #1b1b1b;
+  --color-secondary-container: #d4d4d4;
+
+  --color-outline-variant: #c6c6c6;
+  
+  --color-tertiary-container: #747474;
+  --color-on-tertiary-container: #ffffff;
+}
+
+@theme {
+    --font-display: var(--font-display);
+    --font-body: var(--font-body);
+
+    --color-primary: var(--color-primary);
+    --color-secondary: var(--color-secondary);
+    --color-tertiary: var(--color-tertiary);
+    --color-surface: var(--color-surface);
+    --color-surface-lowest: var(--color-surface-lowest);
+    --color-surface-low: var(--color-surface-low);
+    --color-surface-container: var(--color-surface-container);
+    --color-surface-high: var(--color-surface-high);
+    --color-surface-highest: var(--color-surface-highest);
+    --color-on-primary: var(--color-on-primary);
+    --color-on-secondary-container: var(--color-on-secondary-container);
+    --color-secondary-container: var(--color-secondary-container);
+    --color-outline-variant: var(--color-outline-variant);
+    --color-tertiary-container: var(--color-tertiary-container);
+    --color-on-tertiary-container: var(--color-on-tertiary-container);
+
+    --shadow-ambient: 0px 24px 48px rgba(0, 0, 0, 0.06);
+    --shadow-press: 0px 2px 0px rgba(0,0,0,1);
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* RescueSync utility classes */
+.btn-primary {
+  @apply bg-primary text-on-primary px-6 py-3 font-bold border-none transition-all duration-100 ease-in-out hover:bg-tertiary hover:shadow-press shadow-none cursor-pointer text-center flex items-center justify-center gap-2;
+  border-radius: 0;
+}
+
+.btn-secondary {
+  @apply bg-secondary-container text-on-secondary-container px-6 py-3 font-bold border-none transition-all duration-100 ease-in-out hover:bg-surface-high hover:shadow-press shadow-none cursor-pointer text-center flex items-center justify-center gap-2;
+  border-radius: 0;
+}
+
+.input-brutalist {
+  @apply bg-transparent border-0 border-b-2 border-primary py-3 px-0 w-full transition-all duration-100 ease-in-out focus:outline-none focus:bg-surface-highest focus:px-4;
+}
+
+.card-brutalist {
+  @apply bg-surface p-6 transition-all duration-100 ease-in-out hover:bg-surface-low cursor-pointer;
+}
+
+.glass-nav {
+  @apply bg-surface-lowest/80 backdrop-blur-xl border-b border-outline-variant/20 sticky top-0 z-50;
+}
+
+.ghost-border {
+  @apply border border-outline-variant/20;
+}
+
+.ticker-wrap {
+  @apply w-full overflow-hidden bg-tertiary-container text-on-tertiary-container py-2 flex items-center;
+}
+.ticker {
+  @apply whitespace-nowrap inline-block animate-[ticker_20s_linear_infinite] px-4 font-bold tracking-wider;
+}
+
+@keyframes ticker {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.chip-selected {
+    @apply bg-primary text-on-primary text-sm uppercase tracking-wider px-4 py-1 font-bold;
+}
+.chip-unselected {
+    @apply bg-surface-high text-primary text-sm uppercase tracking-wider px-4 py-1 font-bold;
+}
+
+/* Base structural blocks */
+.block-lowest { @apply bg-surface-lowest; }
+.block-low { @apply bg-surface-low; }
+.block-container { @apply bg-surface-container; }
+.block-high { @apply bg-surface-high; }

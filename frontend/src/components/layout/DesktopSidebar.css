@@ -1,0 +1,54 @@
+.desktop-sidebar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .desktop-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 256px;
+    height: calc(100vh - 56px);
+    position: fixed;
+    left: 0;
+    top: 56px;
+    padding: 48px 16px 16px;
+    background-color: var(--color-surface-container-lowest);
+    border-right: 2px solid var(--color-primary-container);
+    z-index: 40;
+  }
+}
+
+.desktop-sidebar__heading {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-outline-variant);
+  margin-bottom: 16px;
+}
+
+.desktop-sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-primary-container);
+  transition: background-color 0.15s ease;
+}
+
+.desktop-sidebar__item:hover {
+  background-color: var(--color-surface-container-low);
+}
+
+.desktop-sidebar__item--active {
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary);
+  font-weight: 700;
+}
+
+.desktop-sidebar__item--active:hover {
+  background-color: var(--color-primary-container);
+}

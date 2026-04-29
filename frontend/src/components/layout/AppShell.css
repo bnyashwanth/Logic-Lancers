@@ -1,0 +1,19 @@
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.app-shell__content {
+  flex: 1;
+  padding-top: 56px;   /* TopAppBar height */
+  padding-bottom: 64px; /* BottomNavBar height */
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .app-shell__content {
+    margin-left: 256px;  /* DesktopSidebar width */
+    padding-bottom: 0;
+  }
+}
