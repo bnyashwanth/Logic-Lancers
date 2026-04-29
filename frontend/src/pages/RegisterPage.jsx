@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { registerUser } from '../services/api';
 import Icon from '../components/ui/Icon';
 import './AuthPages.css';
 
@@ -9,7 +8,7 @@ export default function RegisterPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -17,8 +16,7 @@ export default function RegisterPage() {
     setLoading(true);
     setError('');
     try {
-      const res = await registerUser(form);
-      login(res.data.token, res.data.user);
+      await register(form);
       navigate('/map', { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');

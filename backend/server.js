@@ -13,24 +13,30 @@ const volunteerRoutes = require('./routes/volunteers');
 const app = express();
 const server = http.createServer(app);
 
+// CORS Configuration
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || /^http:\/\/localhost:\d+$/.test(origin) || origin === process.env.CLIENT_URL) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+};
+
 // Socket.io setup
 const io = new Server(server, {
-  cors: {
-    origin: [process.env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:5174'].filter(Boolean),
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-  },
+  cors: corsOptions,
 });
 
 // Store io instance for route access
 app.set('io', io);
 
 // Middleware
-app.use(cors({ 
-  origin: [process.env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:5174'].filter(Boolean),
-  credentials: true 
-}));
-app.use(express.json());
+app.use(cors(corsOptions));
+app.use(express.json({ limit: '10mb' }));
 
 // Routes
 app.use('/api/auth', authRoutes);

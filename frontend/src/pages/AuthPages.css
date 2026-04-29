@@ -1,28 +1,31 @@
+/* ============================================================
+   Auth Pages — Login & Register
+   ============================================================ */
+
 .auth-page {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   min-height: 100dvh;
-  padding: 16px;
-  background-color: var(--color-surface-container-high);
+  background-color: var(--color-surface-container-low);
+  padding: var(--space-margin-mobile);
 }
 
 .auth-card {
-  width: 100%;
-  max-width: 400px;
   background-color: var(--color-surface-container-lowest);
   border: 1px solid var(--color-primary-container);
   padding: 32px 24px;
+  width: 100%;
+  max-width: 360px;
 }
 
 .auth-card__header {
   text-align: center;
   margin-bottom: 24px;
-  color: var(--color-primary-container);
 }
 
 .auth-card__header h1 {
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .auth-form {
@@ -31,10 +34,16 @@
   gap: 16px;
 }
 
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .auth-error {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   padding: 10px 12px;
   background-color: var(--color-error-container);
   color: var(--color-on-error-container);
@@ -44,16 +53,16 @@
 }
 
 .auth-link {
-  text-align: center;
   margin-top: 16px;
+  text-align: center;
   font-size: 14px;
   color: var(--color-on-surface-variant);
 }
 
 .auth-link a {
   color: var(--color-secondary);
-  font-weight: 700;
   text-decoration: none;
+  font-weight: 600;
 }
 
 .auth-link a:hover {

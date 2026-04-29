@@ -1,90 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import GuestOnlyRoute from './components/GuestOnlyRoute';
-import ProtectedRoute from './components/ProtectedRoute';
-import UserProtectedRoute from './components/UserProtectedRoute';
-import { AuthProvider } from './context/AuthContext';
-import ChatWidget from './components/ChatWidget';
-import InstallPWA from './components/InstallPWA';
-import MapDashboard from './pages/MapDashboard';
-import VictimDashboard from './pages/VictimDashboard';
-import Layout from './components/Layout';
-import Admin from './pages/Admin';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import AppShell from './components/layout/AppShell';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import MapPage from './pages/MapPage';
+import FeedPage from './pages/FeedPage';
+import RequestPage from './pages/RequestPage';
+import { connectSocket, disconnectSocket } from './services/socket';
+import { useEffect } from 'react';
 
-function App() {
-  const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+function ProtectedRoute({ children }) {
+  const { isAuthenticated, loading } = useAuth();
+  if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100dvh', color: 'var(--color-on-surface-variant)' }}>Loading...</div>;
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
+}
+
+function GuestRoute({ children }) {
+  const { isAuthenticated, loading } = useAuth();
+  if (loading) return null;
+  return !isAuthenticated ? children : <Navigate to="/map" replace />;
+}
+
+function AppContent() {
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, []);
+    if (isAuthenticated) {
+      connectSocket();
+    }
+    return () => disconnectSocket();
+  }, [isAuthenticated]);
 
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        {!isOnline ? (
-          <div className="w-full bg-amber-400 px-4 py-2 text-center text-xs font-bold uppercase tracking-[0.3em] text-black">
-            Offline — SOS requests will sync when reconnected
-          </div>
-        ) : null}
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<VictimDashboard />} />
-            <Route
-              path="/login"
-              element={
-                <GuestOnlyRoute>
-                  <Login />
-                </GuestOnlyRoute>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <GuestOnlyRoute>
-                  <Register />
-                </GuestOnlyRoute>
-              }
-            />
-          </Route>
-          <Route
-            path="/admin/login"
-            element={
-              <GuestOnlyRoute>
-                <Login />
-              </GuestOnlyRoute>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <Admin />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/map"
-            element={
-              <UserProtectedRoute>
-                <MapDashboard />
-              </UserProtectedRoute>
-            }
-          />
-        </Routes>
-        <InstallPWA />
-        <ChatWidget />
-      </BrowserRouter>
-    </AuthProvider>
+    <Routes>
+      <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
+      <Route path="/register" element={<GuestRoute><RegisterPage /></GuestRoute>} />
+      <Route element={<ProtectedRoute><AppShell /></ProtectedRoute>}>
+        <Route path="/map" element={<MapPage />} />
+        <Route path="/feed" element={<FeedPage />} />
+        <Route path="/request" element={<RequestPage />} />
+        <Route path="/profile" element={<div style={{ padding: '24px', textAlign: 'center', color: 'var(--color-on-surface-variant)' }}>Profile page coming soon</div>} />
+      </Route>
+      <Route path="*" element={<Navigate to="/map" replace />} />
+    </Routes>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}

@@ -1,211 +1,94 @@
-# RescueSync
+# Walkthrough — Hyperlocal Disaster Sync
 
-RescueSync is a real-time, offline-first disaster response platform that matches volunteers with SOS requests and keeps active incidents visible on a live map.
+## What Was Built
+A complete full-stack **RESPONDER** application converted from 4 Stitch HTML mockups into a production-ready React + Express + MongoDB architecture.
 
-It is built for fast-response coordination: victims or responders can create anonymous SOS requests, volunteers can see those requests instantly, and response updates are synchronized across clients through Socket.io.
-
----
-
-## Tech Stack
-
-### Frontend
-- React
-- Vite
-- Tailwind CSS
-- Leaflet / React Leaflet
-- Axios
-- Socket.io client
-
-### Backend
-- Node.js
-- Express
-- MongoDB + Mongoose
-- Socket.io
-- Ollama local LLM integration
-
-### Platform Focus
-- Anonymous victim SOS reporting
-- Real-time map syncing via WebSockets
-- Duplicate request prevention
-- Offline-first PWA architecture
-
----
-
-## Core Features
-
-- Anonymous SOS reporting with incident creation
-- Volunteer login and incident join flow
-- Real-time incident map for active requests
-- WebSocket-driven updates for new and updated incidents
-- Duplicate request prevention through shared incident state
-- Offline-first PWA behavior for field use
-- Local Ollama chat assistance for guidance and support
-
----
-
-## Project Structure
-
-```text
-.
-├── README.md
-├── backend/
-│   ├── package.json
-│   ├── server.cjs
-│   ├── models/
-│   │   ├── Incident.cjs
-│   │   └── User.cjs
-│   └── routes/
-│       ├── admin.cjs
-│       ├── auth.cjs
-│       ├── chat.cjs
-│       └── incident.cjs
-├── frontend/
-│   ├── package.json
-│   ├── vite.config.js
-│   ├── vercel.json
-│   └── src/
-│       ├── App.jsx
-│       ├── components/
-│       ├── context/
-│       ├── pages/
-│       └── services/
-└── sample/
+## Architecture
+```
+Logic Lancers/
+├── html/                      # 4 Stitch source mockups (reference)
+├── frontend/                  # React + Vite (35+ files)
+│   ├── src/
+│   │   ├── styles/index.css   # Design system tokens
+│   │   ├── components/        # 10 component groups
+│   │   │   ├── layout/        # AppShell, TopAppBar, BottomNavBar, DesktopSidebar
+│   │   │   ├── feed/          # TriageCard, FilterChips, FeedList
+│   │   │   ├── detail/        # CoordinationModal, VolunteerProgress, DetailRow
+│   │   │   ├── map/           # MapView (Leaflet), IncidentOverlay
+│   │   │   ├── form/          # RequestForm, UrgencySelector, LocationPicker
+│   │   │   └── ui/            # Icon
+│   │   ├── pages/             # FeedPage, MapPage, RequestPage, LoginPage, RegisterPage
+│   │   ├── hooks/             # useIncidents, useOnlineStatus
+│   │   ├── context/           # AuthContext
+│   │   └── services/          # api.js, socket.js
+├── backend/                   # Node.js + Express
+│   ├── server.js              # Express + Socket.io + MongoDB
+│   ├── config/db.js           # Mongoose connection
+│   ├── models/                # User.js, Incident.js
+│   ├── routes/                # auth.js, incidents.js, volunteers.js
+│   └── middleware/auth.js     # JWT middleware
 ```
 
----
+## Design System Mapping
+All Stitch design tokens are preserved as CSS custom properties:
 
-## API Endpoints
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--color-primary-container` | `#1F2937` | Buttons, nav active, headers |
+| `--color-error` | `#BA1A1A` | CRITICAL urgency, FAB, alerts |
+| `--color-secondary` | `#0051D5` | STABLE urgency, links, focus |
+| `--color-tertiary` | `#1D1202` | URGENT urgency level |
+| `--color-surface-container-lowest` | `#FFFFFF` | Card/page backgrounds |
+| Font | Inter 400–800 | All text |
+| Border Radius | 0.25rem | Sharp utilitarian |
+| Touch Target | 48px min | All interactive elements |
 
-Base URL: `VITE_API_URL` on the frontend, or `http://localhost:5001` in local development.
+## Screen-to-Component Mapping
+| Stitch Screen | React Components |
+|---------------|-----------------|
+| **1.html** — Nearby Requests Feed | `FeedPage` → `FilterChips` + `FeedList` → `TriageCard` |
+| **2.html** — Coordination Detail | `CoordinationModal` → `VolunteerProgress` + `DetailRow` |
+| **3.html** — Live Coordination Map | `MapPage` → `MapView` + `IncidentOverlay` + `OfflineBanner` |
+| **4.html** — Request Resources | `RequestPage` → `RequestForm` → `UrgencySelector` + `LocationPicker` |
 
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/health` | Health check |
-| POST | `/api/auth/register` | Register a user |
-| POST | `/api/auth/login` | User login |
-| POST | `/api/auth/admin-login` | Admin login |
-| GET | `/api/incidents` | Fetch active incidents |
-| POST | `/api/incidents` | Create a new SOS incident |
-| POST | `/api/incidents/:id/join` | Join an incident as a volunteer |
-| POST | `/api/chat` | Local Ollama chat endpoint (will use Gemini when `GEMINI_API_KEY` is set) |
-| GET | `/api/admin/operators` | Admin operators list |
-| GET | `/api/admin/stats` | Admin dashboard stats |
+## Backend API Routes
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/api/auth/register` | Register volunteer |
+| POST | `/api/auth/login` | JWT login |
+| GET | `/api/auth/me` | Current user |
+| GET | `/api/incidents` | List incidents (filterable) |
+| GET | `/api/incidents/:id` | Incident detail |
+| POST | `/api/incidents` | Create request → Socket.io emit |
+| PUT | `/api/incidents/:id/volunteer` | Join → Socket.io emit |
+| PUT | `/api/incidents/:id/resolve` | Mark resolved |
+| GET | `/api/volunteers/nearby` | Available volunteers |
+| PUT | `/api/volunteers/availability` | Toggle status |
 
-### Incident Request Bodies
+## Real-time (Socket.io)
+Events wired:
+- `incident:new` — emitted on POST, listened in `useIncidents`
+- `incident:updated` — emitted on volunteer/resolve, auto-updates feed
+- `volunteer:location` — broadcast GPS coordinates
+- `volunteer:status` — availability toggle
 
-`POST /api/incidents`
+## Verification
+✅ Frontend dev server starts clean on port 5173
+✅ Login page renders with correct Stitch design system
 
-```json
-{
-  "requesterId": "string",
-  "type": "BLOOD | MEDICINE | RESCUE | SUPPLIES",
-  "description": "string",
-  "location": {
-    "lat": 0,
-    "lng": 0
-  },
-  "requiredVolunteers": 5
-}
-```
+## Next Steps
 
-`POST /api/incidents/:id/join`
+> [!IMPORTANT]
+> **You must update `backend/.env`** with your MongoDB Atlas connection string before running the backend:
+> ```
+> MONGO_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/responder
+> ```
 
-```json
-{
-  "userId": "string"
-}
-```
-
----
-
-## Local Development
-
-### 1. Start MongoDB locally
-Make sure your local MongoDB service is running on port 27017.
-
-### 2. Setup backend env
-
+Then start both servers:
 ```bash
-cd backend
-cp .env.example .env
-# Edit .env with your values
+# Terminal 1 — Backend
+cd backend && npm run dev
+
+# Terminal 2 — Frontend
+cd frontend && npm run dev
 ```
-
-### 3. Install dependencies
-
-```bash
-# Frontend
-cd frontend && npm install
-
-# Backend
-cd backend && npm install
-```
-
-### 4. Run both servers
-
-**Option A — Two terminals (recommended):**
-
-```bash
-# Terminal 1 — Frontend
-cd frontend
-npm run dev
-
-# Terminal 2 — Backend
-cd backend
-npm start
-```
-
-**Option B — Single terminal:**
-
-```bash
-cd frontend
-npm run dev:all
-```
-
-- Frontend: `http://localhost:5173`
-- Backend API: `http://localhost:5001`
-
----
-
-## Deployment
-
-### Frontend → Vercel
-
-1. Push the repo to GitHub.
-2. Import the project in [Vercel](https://vercel.com).
-3. **Build Command:** `npm run build`
-4. **Output Directory:** `dist`
-5. Add environment variable: `VITE_API_URL=<your-render-backend-url>`
-
-Note: If Vercel install fails due to peer dependency conflicts (e.g., `vite-plugin-pwa` vs `vite`), add a project-level `.npmrc` with `legacy-peer-deps=true` or set the install command to `npm install --legacy-peer-deps` in Vercel settings. This allows the build to proceed while you upgrade plugin versions.
-
-### Backend → Render
-
-1. Create a new **Web Service** in [Render](https://render.com).
-2. Connect your GitHub repo.
-3. **Root Directory:** `backend`
-4. **Build Command:** `npm install`
-5. **Start Command:** `npm start`
-6. Add environment variables in the Render dashboard:
-   - `MONGO_URI` — MongoDB Atlas connection string
-   - `JWT_SECRET` — a long random string
-   - `ADMIN_EMAIL` — your admin email
-   - `ADMIN_PASSWORD` — your admin password
-   - `FRONTEND_URL` — your Vercel deployment URL for CORS
-   - `FRONTEND_URLS` — optional comma-separated allow-list of frontend origins
-   - `ALLOW_ALL_ORIGINS` — set to `true` only for local experimentation
-   - `OLLAMA_URL` — the Ollama server URL used by chat.cjs
-   - `OLLAMA_MODEL` — the Ollama model name
-   - `OLLAMA_TIMEOUT_MS` — optional request timeout override
-  - `GEMINI_API_KEY` — optional Google Generative AI / Gemini API key. When set, the backend will attempt to use Gemini for `/api/chat` and fall back to Ollama.
-  - `GEMINI_MODEL` — optional Gemini model id (default: `chat-bison-001`)
-  - `GEMINI_BASE` — optional Gemini base URL (default: `https://generativelanguage.googleapis.com`)
-
----
-
-## Runtime Notes
-
-- The live map is implemented in [frontend/src/pages/MapDashboard.jsx](frontend/src/pages/MapDashboard.jsx).
-- Anonymous SOS creation is handled through [frontend/src/components/SOSModal.jsx](frontend/src/components/SOSModal.jsx).
-- Real-time incident broadcasting is emitted from [backend/routes/incident.cjs](backend/routes/incident.cjs).
-- Chat assistance is handled through local Ollama in [backend/routes/chat.cjs](backend/routes/chat.cjs).

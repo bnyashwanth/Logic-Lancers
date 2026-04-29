@@ -1,17 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './styles/index.css'
 import App from './App.jsx'
-import './index.css'
-import '@fontsource/space-grotesk/400.css'
-import '@fontsource/space-grotesk/700.css'
-import '@fontsource/inter/400.css'
-import '@fontsource/inter/700.css'
-import { registerSW } from 'virtual:pwa-register'
 
-registerSW({ immediate: true })
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
     <App />
-  </React.StrictMode>,
+  </StrictMode>,
 )

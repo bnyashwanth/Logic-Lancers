@@ -1,11 +1,11 @@
 {
-  "name": "rescuesync-backend",
+  "name": "responder-backend",
   "version": "1.0.0",
-  "description": "RescueSync backend API",
-  "main": "server.cjs",
+  "description": "Responder backend API",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.cjs",
-    "dev": "node server.cjs"
+    "start": "node server.js",
+    "dev": "node --watch server.js"
   },
   "engines": {
     "node": ">=18.0.0"

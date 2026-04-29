@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { loginUser } from '../services/api';
 import Icon from '../components/ui/Icon';
 import './AuthPages.css';
 
@@ -18,8 +17,7 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
     try {
-      const res = await loginUser(email, password);
-      login(res.data.token, res.data.user);
+      await login(email, password);
       navigate('/map', { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
