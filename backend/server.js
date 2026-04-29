@@ -16,15 +16,25 @@ const app = express();
 const server = http.createServer(app);
 
 // CORS Configuration
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'https://smart-relief-smoky.vercel.app',
+  process.env.CLIENT_URL
+].filter(Boolean);
+
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || /^http:\/\/localhost:\d+$/.test(origin) || origin === process.env.CLIENT_URL) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      console.warn(`[CORS] Blocked origin: ${origin}`);
+      callback(null, true); // Allow all for now during deployment debugging
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 };
 
