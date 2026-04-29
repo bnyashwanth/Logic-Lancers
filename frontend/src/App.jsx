@@ -8,6 +8,8 @@ import FeedPage from './pages/FeedPage';
 import RequestPage from './pages/RequestPage';
 import AdminPage from './pages/AdminPage';
 import ProfilePage from './pages/ProfilePage';
+import MyRequestsPage from './pages/MyRequestsPage';
+import { useNotifications } from './hooks/useNotifications';
 import { connectSocket, disconnectSocket } from './services/socket';
 import { useEffect } from 'react';
 
@@ -33,13 +35,30 @@ function AdminRoute({ children }) {
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
+  const { playSound } = useNotifications();
 
   useEffect(() => {
     if (isAuthenticated) {
-      connectSocket();
+      const socket = connectSocket();
+      
+      // Listen for notification-worthy events
+      socket.on('incident:new', (incident) => {
+        const isBlood = incident.title.toLowerCase().includes('blood') || incident.tags?.some(t => t.toLowerCase().includes('blood'));
+        if (isBlood) {
+          playSound('blood');
+        } else if (incident.urgency === 'CRITICAL') {
+          playSound('critical');
+        }
+      });
+
+      socket.on('incident:updated', (incident) => {
+        // If I am the requester, and someone new volunteered
+        // (This is a simplified check, ideally the backend should emit a notification event)
+        playSound('volunteer');
+      });
     }
     return () => disconnectSocket();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, playSound]);
 
   return (
     <Routes>
@@ -51,6 +70,7 @@ function AppContent() {
         <Route path="/request" element={<RequestPage />} />
         <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/my-requests" element={<MyRequestsPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/map" replace />} />
     </Routes>

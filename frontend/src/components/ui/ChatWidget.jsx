@@ -33,8 +33,42 @@ export default function ChatWidget() {
 
     try {
       const history = messages.slice(1).map(m => ({ role: m.role, text: m.text }));
-      const res = await api.post('/chat', { message: input, history });
-      setMessages(prev => [...prev, { role: 'model', text: res.data.response }]);
+      const token = localStorage.getItem('token');
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
+      const response = await fetch(`${API_URL}/api/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ message: input, history })
+      });
+
+      if (!response.ok) throw new Error('Failed to fetch');
+
+      // Setup for streaming
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let aiText = '';
+      
+      // Add an initial empty AI message
+      setMessages(prev => [...prev, { role: 'model', text: '' }]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        const chunk = decoder.decode(value, { stream: true });
+        aiText += chunk;
+        
+        // Update the last message (the AI's response) with the accumulated text
+        setMessages(prev => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { role: 'model', text: aiText };
+          return updated;
+        });
+      }
     } catch (err) {
       setMessages(prev => [...prev, { role: 'model', text: '_Sorry, I am having trouble connecting right now._' }]);
     } finally {

@@ -5,6 +5,7 @@ import Icon from '../ui/Icon';
 const navItems = [
   { to: '/map', icon: 'map', label: 'Map' },
   { to: '/feed', icon: 'dynamic_feed', label: 'Feed' },
+  { to: '/my-requests', icon: 'assignment', label: 'Requests' },
   { to: '/profile', icon: 'person', label: 'Profile' },
 ];
 

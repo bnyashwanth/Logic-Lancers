@@ -35,4 +35,12 @@ router.get('/me', auth, async (req, res) => {
   res.json({ success: true, user: { id: req.user._id, name: req.user.name, email: req.user.email, role: req.user.role, isAvailable: req.user.isAvailable, location: req.user.location } });
 });
 
+router.post('/subscribe', auth, async (req, res) => {
+  try {
+    const subscription = req.body;
+    await User.findByIdAndUpdate(req.user._id, { pushSubscription: subscription });
+    res.json({ success: true });
+  } catch (error) { res.status(500).json({ message: error.message }); }
+});
+
 module.exports = router;

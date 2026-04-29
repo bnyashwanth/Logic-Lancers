@@ -1,0 +1,62 @@
+.my-requests-page {
+  padding: 0 var(--space-margin-mobile);
+  max-width: 672px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.my-requests-page__header {
+  padding: 24px 0 16px;
+}
+
+.my-requests-page__header h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-on-surface);
+  margin: 0 0 4px 0;
+}
+
+.my-requests-page__subtitle {
+  font-size: 14px;
+  color: var(--color-on-surface-variant);
+  margin: 0;
+}
+
+.my-requests-page__loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.my-requests-page__fab {
+  position: fixed;
+  bottom: 88px;
+  right: 16px;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-error);
+  color: var(--color-on-error);
+  border: none;
+  cursor: pointer;
+  z-index: 40;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.my-requests-page__fab:hover {
+  background-color: var(--color-on-error-container);
+  transform: scale(1.05);
+}
+
+@media (min-width: 768px) {
+  .my-requests-page__fab {
+    bottom: 24px;
+    right: 24px;
+  }
+}

@@ -1,16 +1,20 @@
 const express = require('express');
 const Incident = require('../models/Incident');
 const auth = require('../middleware/auth');
+const User = require('../models/User');
+const { sendPushNotification } = require('../utils/notifications');
 const router = express.Router();
 
 // GET /api/incidents — List all with optional filters
 router.get('/', async (req, res) => {
   try {
-    const { urgency, type, status, lat, lng, radius } = req.query;
+    const { urgency, type, status, requesterId, lat, lng, radius } = req.query;
     const filter = {};
     if (urgency) filter.urgency = urgency;
     if (type) filter.type = type;
     if (status) filter.status = status;
+    if (requesterId) filter.requesterId = requesterId;
+
     const incidents = await Incident.find(filter).populate('requesterId', 'name').populate('volunteers', 'name').sort({ createdAt: -1 });
     res.json({ success: true, incidents });
   } catch (error) { res.status(500).json({ message: error.message }); }
@@ -33,10 +37,26 @@ router.post('/', auth, async (req, res) => {
       title, description, type, urgency, location, requiredVolunteers,
       contactPerson, specificItems, tags, image, requesterId: req.user._id,
     });
-    // Emit via socket.io if available
     if (req.app.get('io')) {
       req.app.get('io').emit('incident:new', incident);
     }
+
+    // Notify nearby volunteers if CRITICAL
+    if (urgency === 'CRITICAL') {
+      const nearby = await User.find({
+        role: 'VOLUNTEER',
+        isAvailable: true,
+        pushSubscription: { $ne: null }
+      });
+      nearby.forEach(u => {
+        sendPushNotification(u, {
+          title: `CRITICAL: ${type} Emergency`,
+          body: title,
+          data: { sound: type.toLowerCase() === 'medical' ? 'critical' : 'emergency', url: '/map' }
+        });
+      });
+    }
+
     res.status(201).json({ success: true, incident });
   } catch (error) { res.status(500).json({ message: error.message }); }
 });
@@ -61,6 +81,17 @@ router.put('/:id/volunteer', auth, async (req, res) => {
     if (req.app.get('io')) {
       req.app.get('io').emit('incident:updated', updatedIncident);
     }
+
+    // Notify requester
+    const requester = await User.findById(incident.requesterId);
+    if (requester && requester.pushSubscription) {
+      sendPushNotification(requester, {
+        title: 'New Volunteer!',
+        body: `${req.user.name} is coming to help with: ${incident.title}`,
+        data: { sound: 'volunteer', url: '/my-requests' }
+      });
+    }
+
     res.json({ success: true, incident: updatedIncident });
   } catch (error) { res.status(500).json({ message: error.message }); }
 });
@@ -79,6 +110,20 @@ router.put('/:id/resolve', auth, async (req, res) => {
     if (req.app.get('io')) {
       req.app.get('io').emit('incident:updated', updatedIncident);
     }
+
+    // Notify all volunteers
+    const volunteers = await User.find({
+      _id: { $in: incident.volunteers },
+      pushSubscription: { $ne: null }
+    });
+    volunteers.forEach(v => {
+      sendPushNotification(v, {
+        title: 'Incident Resolved',
+        body: `The request "${incident.title}" has been marked as resolved. Thank you for your help!`,
+        data: { sound: 'resolved', url: '/feed' }
+      });
+    });
+
     res.json({ success: true, incident: updatedIncident });
   } catch (error) { res.status(500).json({ message: error.message }); }
 });
