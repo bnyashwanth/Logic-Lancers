@@ -51,6 +51,8 @@ const incidentSchema = new mongoose.Schema({
   specificItems: [{ type: String }],
   tags: [{ type: String }],
   image: { type: String, default: null },
+  isVerified: { type: Boolean, default: false },
+  mergedInto: { type: mongoose.Schema.Types.ObjectId, ref: 'Incident', default: null },
 }, {
   timestamps: true,
 });

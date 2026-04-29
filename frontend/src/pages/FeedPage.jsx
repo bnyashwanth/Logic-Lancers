@@ -41,7 +41,13 @@ export default function FeedPage() {
       </button>
 
       {selectedIncident && (
-        <CoordinationModal incident={selectedIncident} onClose={() => setSelectedIncident(null)} />
+        <CoordinationModal 
+          incident={selectedIncident} 
+          onClose={() => setSelectedIncident(null)} 
+          onNavigate={(inc) => {
+            navigate('/map', { state: { targetedIncident: inc } });
+          }}
+        />
       )}
     </div>
   );

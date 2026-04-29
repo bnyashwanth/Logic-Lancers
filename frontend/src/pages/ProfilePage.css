@@ -1,0 +1,144 @@
+.profile-page {
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--color-on-surface);
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.profile-role-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--color-surface-container-high);
+  padding: 4px 12px;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 20px;
+}
+
+.profile-section {
+  margin-bottom: 32px;
+}
+
+.profile-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+  opacity: 0.7;
+}
+
+.profile-info-card {
+  background: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-info-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-info-row .material-symbols-outlined {
+  color: var(--color-primary);
+}
+
+.profile-info-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-info-details .label {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.profile-info-details .value {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.admin-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.profile-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--color-surface-container-low);
+  border: 1px solid var(--color-outline-variant);
+  color: var(--color-on-surface);
+  border-radius: 4px;
+}
+
+.admin-login-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  font-weight: 700;
+}
+
+.profile-actions {
+  margin-top: 48px;
+}
+
+.logout-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+.logout-btn:hover {
+  background: var(--color-error-container);
+  color: var(--color-error);
+}
+
+.profile-footer {
+  margin-top: 64px;
+  text-align: center;
+  opacity: 0.4;
+  font-size: 11px;
+}

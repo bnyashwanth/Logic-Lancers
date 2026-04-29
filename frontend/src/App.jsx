@@ -6,6 +6,8 @@ import RegisterPage from './pages/RegisterPage';
 import MapPage from './pages/MapPage';
 import FeedPage from './pages/FeedPage';
 import RequestPage from './pages/RequestPage';
+import AdminPage from './pages/AdminPage';
+import ProfilePage from './pages/ProfilePage';
 import { connectSocket, disconnectSocket } from './services/socket';
 import { useEffect } from 'react';
 
@@ -19,6 +21,14 @@ function GuestRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
   if (loading) return null;
   return !isAuthenticated ? children : <Navigate to="/map" replace />;
+}
+
+function AdminRoute({ children }) {
+  const { user, isAuthenticated, loading } = useAuth();
+  if (loading) return <div>Loading...</div>;
+  const isLocalAdmin = sessionStorage.getItem('admin_authenticated') === 'true';
+  if (!isAuthenticated || (user?.role !== 'ADMIN' && !isLocalAdmin)) return <Navigate to="/map" replace />;
+  return children;
 }
 
 function AppContent() {
@@ -39,7 +49,8 @@ function AppContent() {
         <Route path="/map" element={<MapPage />} />
         <Route path="/feed" element={<FeedPage />} />
         <Route path="/request" element={<RequestPage />} />
-        <Route path="/profile" element={<div style={{ padding: '24px', textAlign: 'center', color: 'var(--color-on-surface-variant)' }}>Profile page coming soon</div>} />
+        <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Route>
       <Route path="*" element={<Navigate to="/map" replace />} />
     </Routes>

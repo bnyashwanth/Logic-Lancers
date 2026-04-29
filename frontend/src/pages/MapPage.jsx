@@ -3,15 +3,25 @@ import MapView from '../components/map/MapView';
 import IncidentOverlay from '../components/map/IncidentOverlay';
 import CoordinationModal from '../components/detail/CoordinationModal';
 import { useIncidents } from '../hooks/useIncidents';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Icon from '../components/ui/Icon';
 import './MapPage.css';
+import { useEffect } from 'react';
 
 export default function MapPage() {
   const { incidents } = useIncidents();
   const [selectedIncident, setSelectedIncident] = useState(null);
   const [targetedIncident, setTargetedIncident] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.targetedIncident) {
+      setTargetedIncident(location.state.targetedIncident);
+      // Clean up state so it doesn't re-trigger on refresh
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   return (
     <div className="map-page">
@@ -24,7 +34,7 @@ export default function MapPage() {
         incidents={incidents} 
         onIncidentSelect={(inc) => {
           setTargetedIncident(inc);
-          // Also center map on it
+          setSelectedIncident(inc);
         }} 
       />
 
@@ -34,7 +44,14 @@ export default function MapPage() {
       </button>
 
       {selectedIncident && (
-        <CoordinationModal incident={selectedIncident} onClose={() => setSelectedIncident(null)} />
+        <CoordinationModal 
+          incident={selectedIncident} 
+          onClose={() => setSelectedIncident(null)} 
+          onNavigate={(inc) => {
+            setTargetedIncident(inc);
+            setSelectedIncident(null);
+          }}
+        />
       )}
     </div>
   );

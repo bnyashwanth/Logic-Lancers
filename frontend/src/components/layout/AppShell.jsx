@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import TopAppBar from './TopAppBar';
 import BottomNavBar from './BottomNavBar';
 import DesktopSidebar from './DesktopSidebar';
+import ChatWidget from '../ui/ChatWidget';
 import './AppShell.css';
 
 export default function AppShell() {
@@ -13,6 +14,7 @@ export default function AppShell() {
         <Outlet />
       </main>
       <BottomNavBar />
+      <ChatWidget />
     </div>
   );
 }

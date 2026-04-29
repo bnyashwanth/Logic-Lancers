@@ -31,4 +31,12 @@ export const getNearbyVolunteers = () => api.get('/volunteers/nearby');
 export const toggleAvailability = () => api.put('/volunteers/availability');
 export const updateLocation = (lat, lng) => api.put('/volunteers/location', { lat, lng });
 
+// Admin API
+export const getAdminStats = () => api.get('/admin/stats');
+export const verifyIncident = (id) => api.put(`/admin/incidents/${id}/verify`);
+export const mergeIncidents = (sourceIds, targetId) => api.post('/admin/incidents/merge', { sourceIds, targetId });
+export const updateUserRole = (id, role) => api.put(`/admin/users/${id}/role`, { role });
+export const banUser = (id) => api.put(`/admin/users/${id}/ban`);
+export const broadcastAlert = (message, type = 'info') => api.post('/admin/broadcast', { message, type });
+
 export default api;
