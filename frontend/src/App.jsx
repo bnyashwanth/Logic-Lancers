@@ -34,31 +34,45 @@ function AdminRoute({ children }) {
 }
 
 function AppContent() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { playSound } = useNotifications();
 
   useEffect(() => {
     if (isAuthenticated) {
       const socket = connectSocket();
       
-      // Listen for notification-worthy events
+      const showToast = (toast) => {
+        if (window.__addNotificationToast) window.__addNotificationToast(toast);
+      };
+
+      // New incident created — play sound for blood or critical
       socket.on('incident:new', (incident) => {
-        const isBlood = incident.title.toLowerCase().includes('blood') || incident.tags?.some(t => t.toLowerCase().includes('blood'));
+        const requesterId = incident.requesterId?._id || incident.requesterId;
+        if (String(requesterId) === String(user?.id)) return;
+
+        const isBlood = incident.title?.toLowerCase().includes('blood') || incident.tags?.some(t => t.toLowerCase().includes('blood'));
         if (isBlood) {
           playSound('blood');
+          showToast({ type: 'blood', icon: 'bloodtype', title: '🩸 Blood Emergency', body: incident.title });
         } else if (incident.urgency === 'CRITICAL') {
           playSound('critical');
+          showToast({ type: 'emergency', icon: 'warning', title: '🚨 Critical Emergency', body: incident.title });
+        } else if (incident.urgency === 'HIGH') {
+          playSound('emergency');
+          showToast({ type: 'emergency', icon: 'priority_high', title: 'High Priority Request', body: incident.title });
         }
       });
 
-      socket.on('incident:updated', (incident) => {
-        // If I am the requester, and someone new volunteered
-        // (This is a simplified check, ideally the backend should emit a notification event)
-        playSound('volunteer');
+      // Someone volunteered for MY request
+      socket.on('notification:volunteer-joined', (data) => {
+        if (String(data.requesterId) === String(user?.id)) {
+          playSound('volunteer');
+          showToast({ type: 'volunteer', icon: 'person_add', title: '🙋 New Volunteer!', body: `${data.volunteerName} is heading to help with: ${data.incidentTitle}` });
+        }
       });
     }
     return () => disconnectSocket();
-  }, [isAuthenticated, playSound]);
+  }, [isAuthenticated, user, playSound]);
 
   return (
     <Routes>

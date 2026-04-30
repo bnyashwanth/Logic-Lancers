@@ -15,7 +15,7 @@ export default function TopAppBar() {
         <div className="top-app-bar__leading">
           <Icon name="signal_cellular_alt_2_bar" size={24} />
         </div>
-        <div className="top-app-bar__title">RESPONDER</div>
+        <div className="top-app-bar__title">SMART RELIEF</div>
         <div className="top-app-bar__trailing">
           {user?.role === 'ADMIN' && (
             <button className="top-app-bar__admin-btn" onClick={() => navigate('/admin')} title="Admin Panel">

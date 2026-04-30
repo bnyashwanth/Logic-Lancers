@@ -12,8 +12,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'RESPONDER - Disaster Coordination',
-        short_name: 'RESPONDER',
+        name: 'SMART RELIEF - Disaster Coordination',
+        short_name: 'SMART RELIEF',
         description: 'Real-time disaster response and volunteer coordination platform',
         theme_color: '#1F2937',
         background_color: '#FFFFFF',

@@ -18,7 +18,7 @@ export default function AIChatModal({ isOpen, onClose }) {
       // Initial greeting
       setChatHistory([{
         role: 'model',
-        text: 'Hello! I am RESPONDER AI. How can I help you coordinate today?'
+        text: 'Hello! I am SMART RELIEF AI. How can I help you coordinate today?'
       }]);
     }
   }, [isOpen]);

@@ -37,22 +37,31 @@ router.post('/', auth, async (req, res) => {
       title, description, type, urgency, location, requiredVolunteers,
       contactPerson, specificItems, tags, image, requesterId: req.user._id,
     });
+
+    // Real-time broadcast
     if (req.app.get('io')) {
       req.app.get('io').emit('incident:new', incident);
     }
 
-    // Notify nearby volunteers if CRITICAL
-    if (urgency === 'CRITICAL') {
-      const nearby = await User.find({
-        role: 'VOLUNTEER',
+    // Determine sound type for push
+    const isBlood = title.toLowerCase().includes('blood') || (tags && tags.some(t => t.toLowerCase().includes('blood')));
+    let soundType = 'default';
+    if (isBlood) soundType = 'blood';
+    else if (urgency === 'CRITICAL') soundType = 'critical';
+    else if (urgency === 'HIGH') soundType = 'emergency';
+
+    // Push-notify available volunteers for HIGH, CRITICAL, or blood emergencies
+    if (urgency === 'CRITICAL' || urgency === 'HIGH' || isBlood) {
+      const subscribers = await User.find({
+        _id: { $ne: req.user._id },
         isAvailable: true,
         pushSubscription: { $ne: null }
       });
-      nearby.forEach(u => {
+      subscribers.forEach(u => {
         sendPushNotification(u, {
-          title: `CRITICAL: ${type} Emergency`,
+          title: isBlood ? `🩸 BLOOD EMERGENCY: ${type}` : `🚨 ${urgency}: ${type} Emergency`,
           body: title,
-          data: { sound: type.toLowerCase() === 'medical' ? 'critical' : 'emergency', url: '/map' }
+          data: { sound: soundType, url: '/feed' }
         });
       });
     }
@@ -80,15 +89,33 @@ router.put('/:id/volunteer', auth, async (req, res) => {
 
     if (req.app.get('io')) {
       req.app.get('io').emit('incident:updated', updatedIncident);
+
+      // Targeted event: only the requester should play the volunteer sound
+      req.app.get('io').emit('notification:volunteer-joined', {
+        incidentId: String(incident._id),
+        requesterId: String(incident.requesterId),
+        volunteerName: req.user.name,
+        incidentTitle: incident.title,
+      });
     }
 
-    // Notify requester
+    // Push-notify the requester
     const requester = await User.findById(incident.requesterId);
     if (requester && requester.pushSubscription) {
       sendPushNotification(requester, {
-        title: 'New Volunteer!',
+        title: '🙋 New Volunteer!',
         body: `${req.user.name} is coming to help with: ${incident.title}`,
         data: { sound: 'volunteer', url: '/my-requests' }
+      });
+    }
+
+    // Push-notify the volunteer (confirmation)
+    const volunteer = await User.findById(req.user._id);
+    if (volunteer && volunteer.pushSubscription) {
+      sendPushNotification(volunteer, {
+        title: '✅ You volunteered!',
+        body: `You joined: ${incident.title}. Head to the location now!`,
+        data: { sound: 'resolved', url: '/feed' }
       });
     }
 
@@ -111,15 +138,15 @@ router.put('/:id/resolve', auth, async (req, res) => {
       req.app.get('io').emit('incident:updated', updatedIncident);
     }
 
-    // Notify all volunteers
-    const volunteers = await User.find({
-      _id: { $in: incident.volunteers },
+    // Notify all volunteers + the requester
+    const usersToNotify = await User.find({
+      _id: { $in: [...incident.volunteers, incident.requesterId] },
       pushSubscription: { $ne: null }
     });
-    volunteers.forEach(v => {
-      sendPushNotification(v, {
-        title: 'Incident Resolved',
-        body: `The request "${incident.title}" has been marked as resolved. Thank you for your help!`,
+    usersToNotify.forEach(u => {
+      sendPushNotification(u, {
+        title: '✅ Incident Resolved',
+        body: `"${incident.title}" has been resolved. Thank you for your help!`,
         data: { sound: 'resolved', url: '/feed' }
       });
     });

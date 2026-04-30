@@ -20,7 +20,7 @@ router.post('/auth', auth, async (req, res) => {
     console.log(`[ADMIN AUTH] Attempt for: ${cleanEmail}`);
 
     // Flexible check for hackathon convenience
-    if (cleanEmail === "admin@responder.com" && (cleanPassword === "admin_password_123" || cleanPassword === "admin123")) {
+    if (cleanEmail === "admin@smartrelief.com" && (cleanPassword === "admin_password_123" || cleanPassword === "admin123")) {
       const user = await User.findByIdAndUpdate(req.user._id, { role: 'ADMIN' }, { new: true });
       console.log(`[ADMIN AUTH] SUCCESS: ${user.name} is now an ADMIN`);
       return res.json({ success: true, message: 'Role upgraded to ADMIN', user });

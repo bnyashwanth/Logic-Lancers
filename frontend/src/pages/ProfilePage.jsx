@@ -113,7 +113,7 @@ export default function ProfilePage() {
       </div>
 
       <div className="profile-footer">
-        <p>RESPONDER v1.0.4</p>
+        <p>SMART RELIEF v1.0.4</p>
         <p>Logic Lancers • 2026</p>
       </div>
     </div>

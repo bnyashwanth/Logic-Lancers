@@ -6,6 +6,6 @@
  */
 
 export const ADMIN_CREDENTIALS = {
-  email: "admin@responder.com",
+  email: "admin@smartrelief.com",
   password: "admin_password_123"
 };

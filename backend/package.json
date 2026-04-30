@@ -1,7 +1,7 @@
 {
-  "name": "responder-backend",
+  "name": "smart-relief-backend",
   "version": "1.0.0",
-  "description": "Responder backend API",
+  "description": "Smart Relief backend API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

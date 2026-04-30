@@ -7,7 +7,7 @@ import './ChatWidget.css';
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'model', text: 'Hello! I am **RESPONDER AI**. How can I help you coordinate today?' }
+    { role: 'model', text: 'Hello! I am **SMART RELIEF AI**. How can I help you coordinate today?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,8 @@ export default function ChatWidget() {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
-    const userMsg = { role: 'user', text: input };
+    const currentInput = input.trim();
+    const userMsg = { role: 'user', text: currentInput };
     setMessages(prev => [...prev, userMsg]);
     setInput('');
     setIsLoading(true);
@@ -42,35 +43,54 @@ export default function ChatWidget() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ message: input, history })
+        body: JSON.stringify({ message: currentInput, history })
       });
 
-      if (!response.ok) throw new Error('Failed to fetch');
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.message || `Server error (${response.status})`);
+      }
 
-      // Setup for streaming
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let aiText = '';
-      
-      // Add an initial empty AI message
-      setMessages(prev => [...prev, { role: 'model', text: '' }]);
+      const contentType = response.headers.get('content-type') || '';
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
+      // If it's a JSON response (non-streaming fallback)
+      if (contentType.includes('application/json')) {
+        const data = await response.json();
+        setMessages(prev => [...prev, { role: 'model', text: data.response || data.message || 'No response' }]);
+      } else {
+        // Streaming response
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let aiText = '';
         
-        const chunk = decoder.decode(value, { stream: true });
-        aiText += chunk;
-        
-        // Update the last message (the AI's response) with the accumulated text
-        setMessages(prev => {
-          const updated = [...prev];
-          updated[updated.length - 1] = { role: 'model', text: aiText };
-          return updated;
-        });
+        setMessages(prev => [...prev, { role: 'model', text: '' }]);
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          
+          const chunk = decoder.decode(value, { stream: true });
+          aiText += chunk;
+          
+          setMessages(prev => {
+            const updated = [...prev];
+            updated[updated.length - 1] = { role: 'model', text: aiText };
+            return updated;
+          });
+        }
+
+        // If no text was received, show fallback
+        if (!aiText.trim()) {
+          setMessages(prev => {
+            const updated = [...prev];
+            updated[updated.length - 1] = { role: 'model', text: '_No response received. Please try again._' };
+            return updated;
+          });
+        }
       }
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'model', text: '_Sorry, I am having trouble connecting right now._' }]);
+      console.error('[CHAT ERROR]', err);
+      setMessages(prev => [...prev, { role: 'model', text: `_Sorry, I am having trouble connecting right now. (${err.message})_` }]);
     } finally {
       setIsLoading(false);
     }
@@ -86,7 +106,7 @@ export default function ChatWidget() {
                 <Icon name="smart_toy" size={18} />
               </div>
               <div>
-                <div className="chat-header__name">RESPONDER AI</div>
+                <div className="chat-header__name">SMART RELIEF AI</div>
                 <div className="chat-header__status">Always active</div>
               </div>
             </div>

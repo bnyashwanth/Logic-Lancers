@@ -7,7 +7,7 @@ const vapidKeys = {
 
 if (vapidKeys.publicKey && vapidKeys.privateKey) {
   webpush.setVapidDetails(
-    process.env.VAPID_EMAIL || 'mailto:admin@responder.com',
+    process.env.VAPID_EMAIL || 'mailto:admin@smartrelief.com',
     vapidKeys.publicKey,
     vapidKeys.privateKey
   );

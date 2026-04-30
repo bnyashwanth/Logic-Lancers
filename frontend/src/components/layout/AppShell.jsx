@@ -3,6 +3,7 @@ import TopAppBar from './TopAppBar';
 import BottomNavBar from './BottomNavBar';
 import DesktopSidebar from './DesktopSidebar';
 import ChatWidget from '../ui/ChatWidget';
+import NotificationToast from '../ui/NotificationToast';
 import './AppShell.css';
 
 export default function AppShell() {
@@ -15,6 +16,7 @@ export default function AppShell() {
       </main>
       <BottomNavBar />
       <ChatWidget />
+      <NotificationToast />
     </div>
   );
 }

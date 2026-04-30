@@ -29,14 +29,14 @@ export default function LoginPage() {
       <div className="auth-card">
         <div className="auth-card__header">
           <Icon name="signal_cellular_alt_2_bar" size={32} />
-          <h1 className="text-headline-lg">RESPONDER</h1>
+          <h1 className="text-headline-lg">SMART RELIEF</h1>
           <p className="text-body-md" style={{ color: 'var(--color-on-surface-variant)' }}>Hyperlocal Disaster Coordination</p>
         </div>
         <form className="auth-form" onSubmit={handleSubmit}>
           {error && <div className="auth-error"><Icon name="error" size={16} /> {error}</div>}
           <div className="form-field">
             <label className="text-label-bold" htmlFor="email">Email</label>
-            <input className="input" id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="responder@rescue.org" required />
+            <input className="input" id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="volunteer@smartrelief.org" required />
           </div>
           <div className="form-field">
             <label className="text-label-bold" htmlFor="password">Password</label>
