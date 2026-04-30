@@ -9,7 +9,7 @@ export default function CoordinationModal({ incident, onClose, onNavigate }) {
   const [loading, setLoading] = useState(false);
   if (!incident) return null;
 
-  const isFull = incident.volunteers?.length >= incident.requiredVolunteers;
+  const isFull = incident.volunteers?.length >= 10;
 
   const handleVolunteer = async () => {
     setLoading(true);
@@ -42,12 +42,12 @@ export default function CoordinationModal({ incident, onClose, onNavigate }) {
         {isFull && (
           <div className="coordination-modal__warning">
             <Icon name="warning" filled size={20} />
-            <p>Warning: {incident.requiredVolunteers} volunteers are already heading to this location. Your help might be needed elsewhere.</p>
+            <p>Warning: 10 volunteers are already heading to this location. Your help might be needed elsewhere.</p>
           </div>
         )}
 
         {/* Progress */}
-        <VolunteerProgress current={incident.volunteers?.length || 0} max={incident.requiredVolunteers || 10} />
+        <VolunteerProgress current={incident.volunteers?.length || 0} max={10} />
 
         {/* Details */}
         <div className="coordination-modal__details">

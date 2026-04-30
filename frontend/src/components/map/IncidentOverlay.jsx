@@ -30,7 +30,7 @@ export default function IncidentOverlay(props) {
             <span style={{ fontWeight: '500' }}>{inc.title}</span>
           </div>
           <div style={{ fontSize: '11px', opacity: 0.7, marginLeft: '16px' }}>
-            Volunteers en route: {inc.volunteers?.length || 0}/{inc.requiredVolunteers || 10}
+            Volunteers en route: {inc.volunteers?.length || 0}/10
           </div>
           <div style={{ fontSize: '10px', color: 'var(--color-primary)', marginLeft: '16px', textDecoration: 'underline' }}>
             Tap to view details & route

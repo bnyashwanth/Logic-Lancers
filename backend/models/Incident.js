@@ -32,7 +32,7 @@ const incidentSchema = new mongoose.Schema({
   },
   requiredVolunteers: {
     type: Number,
-    default: 5,
+    default: 10,
     min: 1,
   },
   volunteers: [{

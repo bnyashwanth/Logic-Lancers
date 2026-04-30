@@ -70,6 +70,12 @@ function AppContent() {
           showToast({ type: 'volunteer', icon: 'person_add', title: '🙋 New Volunteer!', body: `${data.volunteerName} is heading to help with: ${data.incidentTitle}` });
         }
       });
+
+      // Global admin broadcast
+      socket.on('broadcast', (data) => {
+        playSound('critical');
+        showToast({ type: 'emergency', icon: 'campaign', title: '⚠️ GLOBAL ALERT', body: data.message });
+      });
     }
     return () => disconnectSocket();
   }, [isAuthenticated, user, playSound]);
