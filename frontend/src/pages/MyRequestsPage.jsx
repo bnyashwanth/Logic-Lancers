@@ -14,10 +14,10 @@ export default function MyRequestsPage() {
 
   // Only fetch if user is loaded and we have an ID
   const { incidents, loading: incidentsLoading } = useIncidents(
-    user?._id ? { requesterId: user._id } : { skip: true }
+    user?.id ? { requesterId: user.id } : { skip: true }
   );
 
-  const loading = authLoading || (incidentsLoading && user?._id);
+  const loading = authLoading || (incidentsLoading && user?.id);
 
   return (
     <div className="my-requests-page">
@@ -30,7 +30,7 @@ export default function MyRequestsPage() {
         <div className="my-requests-page__loading">
           <div className="animate-pulse" style={{ color: 'var(--color-on-surface-variant)' }}>Loading your requests...</div>
         </div>
-      ) : !user?._id ? (
+      ) : !user?.id ? (
         <div className="my-requests-page__error">Please login to view your requests.</div>
       ) : (
         <FeedList incidents={incidents} onCardClick={setSelectedIncident} />

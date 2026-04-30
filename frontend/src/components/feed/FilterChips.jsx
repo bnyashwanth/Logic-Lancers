@@ -3,6 +3,7 @@ import Icon from '../ui/Icon';
 
 const filters = [
   { id: 'critical', icon: 'emergency', label: 'Critical First' },
+  { id: 'my_requests', icon: 'assignment', label: 'My Requests' },
   { id: 'distance', icon: 'near_me', label: 'Distance: < 5km' },
   { id: 'filters', icon: 'filter_list', label: 'Filters' },
 ];

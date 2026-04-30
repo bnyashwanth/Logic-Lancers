@@ -99,23 +99,13 @@ router.put('/:id/volunteer', auth, async (req, res) => {
       });
     }
 
-    // Push-notify the requester
+    // Push-notify ONLY the requester (the person who posted the SOS)
     const requester = await User.findById(incident.requesterId);
-    if (requester && requester.pushSubscription) {
+    if (requester && requester.pushSubscription && String(requester._id) !== String(req.user._id)) {
       sendPushNotification(requester, {
-        title: '🙋 New Volunteer!',
-        body: `${req.user.name} is coming to help with: ${incident.title}`,
+        title: '🙋 Volunteer Heading Your Way!',
+        body: `${req.user.name} has volunteered to help with: ${incident.title}`,
         data: { sound: 'volunteer', url: '/my-requests' }
-      });
-    }
-
-    // Push-notify the volunteer (confirmation)
-    const volunteer = await User.findById(req.user._id);
-    if (volunteer && volunteer.pushSubscription) {
-      sendPushNotification(volunteer, {
-        title: '✅ You volunteered!',
-        body: `You joined: ${incident.title}. Head to the location now!`,
-        data: { sound: 'resolved', url: '/feed' }
       });
     }
 

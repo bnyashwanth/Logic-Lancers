@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import FilterChips from '../components/feed/FilterChips';
 import FeedList from '../components/feed/FeedList';
 import CoordinationModal from '../components/detail/CoordinationModal';
@@ -8,13 +9,16 @@ import Icon from '../components/ui/Icon';
 import './FeedPage.css';
 
 export default function FeedPage() {
+  const { user } = useAuth();
   const [activeFilter, setActiveFilter] = useState('critical');
   const [selectedIncident, setSelectedIncident] = useState(null);
   const navigate = useNavigate();
 
   const filters = {};
   if (activeFilter === 'critical') filters.urgency = 'CRITICAL';
-  const { incidents, loading } = useIncidents(activeFilter === 'critical' ? {} : {});
+  if (activeFilter === 'my_requests' && user?.id) filters.requesterId = user.id;
+
+  const { incidents, loading } = useIncidents(filters);
 
   // Sort: CRITICAL first when filter active
   const sorted = activeFilter === 'critical'
