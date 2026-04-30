@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useIncidents } from '../hooks/useIncidents';
 import { getAdminStats, verifyIncident, banUser, broadcastAlert } from '../services/api';
 import Icon from '../components/ui/Icon';
+import AdminMap from '../components/admin/AdminMap';
 import './AdminPage.css';
 
 export default function AdminPage() {
@@ -47,6 +48,7 @@ export default function AdminPage() {
         <h1 className="text-display-sm">Command Center</h1>
         <div className="admin-tabs">
           <button className={`admin-tab ${activeTab === 'command' ? 'active' : ''}`} onClick={() => setActiveTab('command')}>Incident Command</button>
+          <button className={`admin-tab ${activeTab === 'map' ? 'active' : ''}`} onClick={() => setActiveTab('map')}>Tactical Map</button>
           <button className={`admin-tab ${activeTab === 'users' ? 'active' : ''}`} onClick={() => setActiveTab('users')}>Users</button>
           <button className={`admin-tab ${activeTab === 'broadcast' ? 'active' : ''}`} onClick={() => setActiveTab('broadcast')}>Broadcast</button>
         </div>
@@ -105,6 +107,12 @@ export default function AdminPage() {
           <div className="admin-card">
             <h3 className="text-label-bold">User Management</h3>
             <p className="text-body-sm" style={{ opacity: 0.7 }}>User list integration pending more backend data.</p>
+          </div>
+        )}
+
+        {activeTab === 'map' && (
+          <div className="admin-card" style={{ padding: '0', overflow: 'hidden' }}>
+            <AdminMap />
           </div>
         )}
 
