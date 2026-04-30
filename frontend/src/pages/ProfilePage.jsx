@@ -1,6 +1,7 @@
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../components/ui/Icon';
+import api from '../services/api';
 import { ADMIN_CREDENTIALS } from '../config/AdminCredentials';
 import './ProfilePage.css';
 import { useState } from 'react';
@@ -71,8 +72,8 @@ export default function ProfilePage() {
                     window.location.reload();
                   }
                 } catch (err) {
-                  console.error('[ADMIN AUTH ERROR]', err.response?.data);
-                  alert(err.response?.data?.message || "Verification failed");
+                  console.error('[ADMIN AUTH ERROR]', err);
+                  alert(err.response?.data?.message || err.message || "Verification failed");
                 }
               }}>
                 <input 

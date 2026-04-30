@@ -74,6 +74,42 @@ function AppContent() {
     return () => disconnectSocket();
   }, [isAuthenticated, user, playSound]);
 
+  // Offline Sync Queue Listener
+  useEffect(() => {
+    const handleOnline = async () => {
+      if (!isAuthenticated) return;
+      import('./services/offlineQueue').then(async ({ getOfflineQueue, removeOfflineIncident }) => {
+        const queue = getOfflineQueue();
+        if (queue.length === 0) return;
+        
+        const { createIncident } = await import('./services/api');
+        
+        let successCount = 0;
+        for (const item of queue) {
+          try {
+            await createIncident(item.data);
+            removeOfflineIncident(item.id);
+            successCount++;
+          } catch (err) {
+            console.error('Failed to sync offline incident', err);
+          }
+        }
+        
+        if (successCount > 0 && window.__addNotificationToast) {
+          window.__addNotificationToast({
+            type: 'info',
+            icon: 'cloud_sync',
+            title: 'Connectivity Restored',
+            body: `Successfully synced ${successCount} offline SOS request(s).`
+          });
+        }
+      });
+    };
+
+    window.addEventListener('online', handleOnline);
+    return () => window.removeEventListener('online', handleOnline);
+  }, [isAuthenticated]);
+
   return (
     <Routes>
       <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />

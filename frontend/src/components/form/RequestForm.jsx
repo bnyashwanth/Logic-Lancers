@@ -39,17 +39,29 @@ export default function RequestForm() {
     e.preventDefault();
     if (!form.type || !form.title) { alert('Fill required fields'); return; }
     if (!form.location) { alert('Location is required'); return; }
+    
+    const payload = {
+      title: form.title,
+      description: form.description,
+      type: form.type,
+      urgency: form.urgency,
+      location: form.location,
+      image: form.image,
+      tags: [categories.find(c => c.value === form.type)?.label || form.type],
+    };
+
+    if (!navigator.onLine) {
+      import('../../services/offlineQueue').then(({ saveToOfflineQueue }) => {
+        saveToOfflineQueue(payload);
+        alert('⚠️ You are offline. Your request has been securely saved and will sync automatically once connectivity is restored.');
+        navigate('/feed');
+      });
+      return;
+    }
+
     setLoading(true);
     try {
-      await createIncident({
-        title: form.title,
-        description: form.description,
-        type: form.type,
-        urgency: form.urgency,
-        location: form.location,
-        image: form.image,
-        tags: [categories.find(c => c.value === form.type)?.label || form.type],
-      });
+      await createIncident(payload);
       navigate('/feed');
     } catch (err) {
       alert(err.response?.data?.message || 'Failed to create request');

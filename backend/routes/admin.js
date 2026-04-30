@@ -93,9 +93,25 @@ router.put('/users/:id/ban', auth, isAdmin, async (req, res) => {
 router.post('/broadcast', auth, isAdmin, async (req, res) => {
   try {
     const { message, type } = req.body;
+    
+    // 1. Real-time socket broadcast
     if (req.app.get('io')) {
       req.app.get('io').emit('broadcast', { message, type, timestamp: new Date() });
     }
+
+    // 2. Global Push Notification to all subscribed users
+    const { sendPushNotification } = require('../utils/notifications');
+    const subscribers = await User.find({ pushSubscription: { $ne: null } });
+    
+    // Fire and forget push notifications to avoid blocking the response
+    subscribers.forEach(user => {
+      sendPushNotification(user, {
+        title: '⚠️ GLOBAL ALERT',
+        body: message,
+        data: { sound: 'critical', url: '/feed' }
+      });
+    });
+
     res.json({ success: true });
   } catch (error) { res.status(500).json({ message: error.message }); }
 });

@@ -109,9 +109,11 @@
   gap: 4px;
   font-size: 10px;
   font-weight: 700;
-  color: var(--color-primary);
-  background: var(--color-primary-container);
-  padding: 2px 6px;
+  color: #ffffff;
+  background: #14b8a6; /* Bright teal for high contrast */
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
 }
 
 .stats-grid {
